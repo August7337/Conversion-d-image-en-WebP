@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conversion d'image en WebP avec résolution</title>
+</head>
+<body>
+    <input type="file" id="fileInput" accept="image/*" />
+    <br />
+    <label for="resolutionSlider" style="display: none;">Résolution: <span id="resolutionLabel">100%</span></label>
+    <input type="range" id="resolutionSlider" min="5" max="100" step="1" value="100" style="display: none;" />
+    <br />
+    <span id="dimensionsLabel"></span>
+    <br />
+    <button onclick="convertToWebP()" style="display: none;">Convertir en WebP</button>
+    <br />
+    <a id="downloadLink" style="display: none;" download="image.webp">Télécharger l'image WebP</a>
+    <img id="imagePreview" style="visibility: hidden; position: absolute;" />
+    <script>
+        function updateDimensionsLabel(width, height) {
+            var resolution = document.getElementById('resolutionSlider').value / 100;
+            var newWidth = Math.round(width * resolution);
+            var newHeight = Math.round(height * resolution);
+            document.getElementById('dimensionsLabel').innerText = newWidth + ' px * ' + newHeight + ' px';
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function () {
+            var fileInput = document.getElementById('fileInput');
+            var reader = new FileReader();
+            var resolutionLabel = document.getElementById('resolutionLabel');
+            var resolutionSlider = document.getElementById('resolutionSlider');
+            var convertButton = document.querySelector('button');
+            var downloadLink = document.getElementById('downloadLink');
+            var imagePreview = document.getElementById('imagePreview');
+
+            reader.onloadend = function () {
+                imagePreview.src = reader.result;
+                imagePreview.onload = function () {
+                    var width = imagePreview.naturalWidth;
+                    var height = imagePreview.naturalHeight;
+                    updateDimensionsLabel(width, height);
+                    resolutionLabel.style.display = 'inline';
+                    resolutionSlider.style.display = 'inline';
+                    convertButton.style.display = 'inline';
+                    imagePreview.style.visibility = 'hidden';
+                };
+            };
+
+            var file = fileInput.files[0];
+            if (file) {
+                reader.readAsDataURL(file);
+                resolutionLabel.style.display = 'inline';
+                resolutionSlider.style.display = 'inline';
+                convertButton.style.display = 'inline';
+                downloadLink.style.display = 'none';
+            } else {
+                resolutionLabel.style.display = 'none';
+                resolutionSlider.style.display = 'none';
+                convertButton.style.display = 'none';
+                downloadLink.style.display = 'none';
+            }
+        });
+
+        function convertToWebP() {
+            var fileInput = document.getElementById('fileInput');
+            var downloadLink = document.getElementById('downloadLink');
+
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                var img = new Image();
+                img.src = reader.result;
+
+                img.onload = function () {
+                    var canvas = document.createElement('canvas');
+
+                    var resolution = document.getElementById('resolutionSlider').value / 100;
+                    var width = Math.round(img.naturalWidth * resolution);
+                    var height = Math.round(img.naturalHeight * resolution);
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    var webpDataURL = canvas.toDataURL('image/webp');
+
+                    var originalFileName = file.name.replace(/\.[^/.]+$/, '');
+
+                    downloadLink.href = webpDataURL;
+                    downloadLink.download = originalFileName + '.webp';
+                    downloadLink.style.display = 'block';
+                };
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        var resolutionSlider = document.getElementById('resolutionSlider');
+        resolutionSlider.addEventListener('input', function () {
+            document.getElementById('resolutionLabel').innerText = resolutionSlider.value + '%';
+            var imagePreview = document.getElementById('imagePreview');
+            if (imagePreview.complete) {
+                var width = imagePreview.naturalWidth;
+                var height = imagePreview.naturalHeight;
+                updateDimensionsLabel(width, height);
+            }
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function () {
+            var imagePreview = document.getElementById('imagePreview');
+            imagePreview.style.visibility = 'visible';
+            updateDimensionsLabel(imagePreview.naturalWidth, imagePreview.naturalHeight);
+        });
+    </script>
+</body>
+</html>
