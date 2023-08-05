@@ -1,0 +1,85 @@
+:root{
+    --white: #fffdf8;
+    --midnightPurple: #3c315b;
+    --violet: #f5f2ff;
+    --purple: #ab9ff2;
+    --lilac: #e2dffe;
+}
+
+*{
+    font-family: 'Roboto', sans-serif;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    color: var(--midnightPurple);
+}
+
+#main-section{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--violet);
+}
+
+#main-section > .wrapper{
+    margin-top: 85px;
+    max-width: 1120px;
+}
+
+h1{
+    font-size: 100px;
+    text-align: center;
+}
+
+#dropArea{
+    width: 300px; 
+    height: 150px; 
+    border-radius: 33px;
+    border: 2px dashed var(--midnightPurple); 
+    text-align: center; 
+    padding: 20px;
+    margin-top: 80px;
+}
+
+#dropArea > .wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button{
+    width: 231px;
+    height: 55px;
+    background-color: var(--purple);
+    border-radius: 32px;
+    padding: 16px 32px;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+
+    webkit-transition: -webkit-transform 0.2s ease-in,background-color 0.2s ease-in,color 0.2s ease-in;
+    transition: transform 0.2s ease-in,background-color 0.2s ease-in,color 0.2s ease-in;
+}
+
+button:hover{
+    cursor: pointer;
+    background-color: var(--lilac);
+    webkit-transform: scale(0.985);
+    -moz-transform: scale(0.985);
+    -ms-transform: scale(0.985);
+    transform: scale(0.985);
+}
+
+#fileInput, label, #resolutionSlider, #convertButton, #selectedFileName, #downloadLink{
+    display: none;
+}
+
+#imagePreview{
+    visibility: hidden; 
+    position: absolute;
+}

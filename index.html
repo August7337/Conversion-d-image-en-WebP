@@ -2,132 +2,37 @@
 <html>
 <head>
     <title>Conversion d'image en WebP avec résolution</title>
+    <link rel="stylesheet" href="main.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="dropArea" style="width: 300px; height: 150px; border: 2px dashed #ccc; text-align: center; padding: 20px;">
-        <p>Glissez-déposez un fichier ici</p>
-        <input type="file" id="fileInput" accept="image/*" style="display: none;" />
-    </div>
-    <br />
-    <label for="resolutionSlider" style="display: none;">Résolution: <span id="resolutionLabel">100%</span></label>
-    <input type="range" id="resolutionSlider" min="5" max="100" step="1" value="100" style="display: none;" />
-    <br />
-    <span id="dimensionsLabel"></span>
-    <br />
-    <button onclick="openFilePicker()">Sélectionner une image</button>
-    <button onclick="convertToWebP()" id="convertButton" style="display: none;">Convertir en WebP</button>
-    <br />
-    <a id="downloadLink" style="display: none;" download="image.webp">Télécharger l'image WebP</a>
-    <img id="imagePreview" style="visibility: hidden; position: absolute;" />
-    <script>
-        var originalFileName; // Variable pour stocker le nom du fichier d'origine
-
-        function updateDimensionsLabel(width, height) {
-            var resolution = document.getElementById('resolutionSlider').value / 100;
-            var newWidth = Math.round(width * resolution);
-            var newHeight = Math.round(height * resolution);
-            document.getElementById('dimensionsLabel').innerText = newWidth + ' px * ' + newHeight + ' px';
-        }
-
-        function handleFileSelect(evt) {
-            evt.stopPropagation();
-            evt.preventDefault();
-
-            var file;
-            if (evt.dataTransfer) {
-                file = evt.dataTransfer.files[0];
-            } else if (evt.target.files) {
-                file = evt.target.files[0];
-            }
-
-            var reader = new FileReader();
-            var resolutionLabel = document.getElementById('resolutionLabel');
-            var resolutionSlider = document.getElementById('resolutionSlider');
-            var convertButton = document.getElementById('convertButton');
-            var downloadLink = document.getElementById('downloadLink');
-            var imagePreview = document.getElementById('imagePreview');
-
-            reader.onloadend = function () {
-                imagePreview.src = reader.result;
-                imagePreview.onload = function () {
-                    var width = imagePreview.naturalWidth;
-                    var height = imagePreview.naturalHeight;
-                    updateDimensionsLabel(width, height);
-                    resolutionLabel.style.display = 'inline';
-                    resolutionSlider.style.display = 'inline';
-                    convertButton.style.display = 'inline';
-                    downloadLink.style.display = 'none';
-                    imagePreview.style.visibility = 'hidden';
-                };
-            };
-
-            if (file) {
-                originalFileName = file.name; // Enregistrer le nom du fichier d'origine
-                reader.readAsDataURL(file);
-                resolutionLabel.style.display = 'inline';
-                resolutionSlider.style.display = 'inline';
-                convertButton.style.display = 'inline';
-            }
-        }
-
-        function handleDragOver(evt) {
-            evt.stopPropagation();
-            evt.preventDefault();
-            evt.dataTransfer.dropEffect = 'copy';
-        }
-
-        document.getElementById('dropArea').addEventListener('dragover', handleDragOver, false);
-        document.getElementById('dropArea').addEventListener('drop', handleFileSelect, false);
-
-        function openFilePicker() {
-            document.getElementById('fileInput').click();
-        }
-
-        function convertToWebP() {
-            var file = document.getElementById('imagePreview').src;
-
-            var img = new Image();
-            img.src = file;
-
-            img.onload = function () {
-                var canvas = document.createElement('canvas');
-
-                var resolution = document.getElementById('resolutionSlider').value / 100;
-                var width = Math.round(img.naturalWidth * resolution);
-                var height = Math.round(img.naturalHeight * resolution);
-                canvas.width = width;
-                canvas.height = height;
-
-                var ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                var webpDataURL = canvas.toDataURL('image/webp');
-
-                var downloadLink = document.getElementById('downloadLink');
-
-                downloadLink.href = webpDataURL;
-                downloadLink.download = originalFileName.replace(/\.[^/.]+$/, '') + '.webp'; // Utiliser le même nom avec l'extension WebP
-                downloadLink.style.display = 'block';
-            };
-        }
-
-        var resolutionSlider = document.getElementById('resolutionSlider');
-        resolutionSlider.addEventListener('input', function () {
-            document.getElementById('resolutionLabel').innerText = resolutionSlider.value + '%';
-            var imagePreview = document.getElementById('imagePreview');
-            if (imagePreview.complete) {
-                var width = imagePreview.naturalWidth;
-                var height = imagePreview.naturalHeight;
-                updateDimensionsLabel(width, height);
-            }
-        });
-
-        document.getElementById('fileInput').addEventListener('change', function (evt) {
-            handleFileSelect(evt); // Appeler la fonction de gestion de fichier pour gérer la sélection via le bouton
-            var imagePreview = document.getElementById('imagePreview');
-            imagePreview.style.visibility = 'visible';
-            updateDimensionsLabel(imagePreview.naturalWidth, imagePreview.naturalHeight);
-        });
-    </script>
+    <section id="main-section">
+        <div class="wrapper">
+            <h1>Convertisseur d'image en .web gratuit</h1>
+        </div>
+        <div id="dropArea">
+            <p>Glissez-déposez un fichier ici, ou</p>
+            <input type="file" id="fileInput" accept="image/*"/>
+            <div class="wrapper">
+                <button onclick="openFilePicker()">Sélectionner une image</button>
+            </div>
+        </div>
+        <br />
+        <label for="resolutionSlider">Résolution: <span id="resolutionLabel">100%</span></label>
+        <input type="range" id="resolutionSlider" min="5" max="100" step="1" value="100"/>
+        <br />
+        <span id="dimensionsLabel"></span>
+        <br />
+        
+        <button onclick="convertToWebP()" id="convertButton">Convertir en WebP</button>
+        <br />
+        <span id="selectedFileName" ></span>
+        <a id="downloadLink" download="image.webp">Télécharger l'image WebP</a>
+        <img id="imagePreview"/>
+    </section>
 </body>
+<script src="script.js"></script>
 </html>
