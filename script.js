@@ -25,6 +25,7 @@ function handleFileSelect(evt) {
     var downloadLink = document.getElementById('downloadLink');
     var imagePreview = document.getElementById('imagePreview');
     var selectedFileName = document.getElementById('selectedFileName');
+    var label = document.getElementById('label');
 
     reader.onloadend = function () {
         imagePreview.src = reader.result;
@@ -35,6 +36,7 @@ function handleFileSelect(evt) {
             resolutionLabel.style.display = 'inline';
             resolutionSlider.style.display = 'inline';
             convertButton.style.display = 'inline';
+            label.style.display = 'block';
             selectedFileName.innerText = file.name; // Afficher le nom du fichier sélectionné
             selectedFileName.style.display = 'inline';
             downloadLink.style.display = 'none';
@@ -46,7 +48,7 @@ function handleFileSelect(evt) {
         originalFileName = file.name; // Enregistrer le nom du fichier d'origine
         reader.readAsDataURL(file);
         resolutionLabel.style.display = 'inline';
-        resolutionSlider.style.display = 'inline';
+        resolutionSlider.style.display = 'inline'; // Afficher le slider de résolution
         convertButton.style.display = 'inline';
     }
 }

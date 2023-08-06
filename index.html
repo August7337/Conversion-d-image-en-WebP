@@ -9,9 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
+    <img id="coin" src="webp-img.png"></img>
     <section id="main-section">
         <div class="wrapper">
-            <h1>Convertisseur d'image en .web gratuit</h1>
+            <h1>Convertisseur d'image en .webp gratuit</h1>
         </div>
         <div id="dropArea">
             <p>Glissez-déposez un fichier ici, ou</p>
@@ -21,17 +22,27 @@
             </div>
         </div>
         <br />
-        <label for="resolutionSlider">Résolution: <span id="resolutionLabel">100%</span></label>
-        <input type="range" id="resolutionSlider" min="5" max="100" step="1" value="100"/>
-        <br />
-        <span id="dimensionsLabel"></span>
-        <br />
-        
-        <button onclick="convertToWebP()" id="convertButton">Convertir en WebP</button>
-        <br />
+
         <span id="selectedFileName" ></span>
-        <a id="downloadLink" download="image.webp">Télécharger l'image WebP</a>
-        <img id="imagePreview"/>
+        <br />
+
+        <div class="bTom">
+            <div>
+                <label for="resolutionSlider" id="label">Modifier la résolution: <span id="resolutionLabel">100%</span></label>
+
+                <div class="input-wrapper">
+                    <input type="range" id="resolutionSlider" min="5" max="100" step="1" value="100"/>
+                </div>
+
+                <span id="dimensionsLabel"></span>
+            </div>
+            
+
+            <button onclick="convertToWebP()" id="convertButton">Convertir en WebP</button>
+
+            <a id="downloadLink" download="image.webp">Télécharger</a>
+            <img id="imagePreview"/>
+        </div>
     </section>
 </body>
 <script src="script.js"></script>
