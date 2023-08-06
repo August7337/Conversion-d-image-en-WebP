@@ -116,6 +116,12 @@ a:hover{
     max-height: 275px;
 }
 
+.mod-resolution{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #fileInput, #label, #resolutionSlider, #convertButton, #selectedFileName, #downloadLink{
     display: none;
 }
@@ -135,6 +141,7 @@ input[type=range] {
     -webkit-appearance: none;
     margin: 10px 0;
     width: 100%;
+    margin: 15px 0 18px;
   }
   input[type=range]:focus {
     outline: none;
@@ -279,5 +286,18 @@ input[type=range] {
 
     #dropArea{
         width: calc(100vw - 150px); 
+    }
+}
+
+@media screen and (max-width: 400px){
+    h1{
+        font-size: 30px;
+    }
+    #main-section > .wrapper{
+        max-width: 335px;
+    }   
+
+    #dropArea{
+        width: calc(100vw - 100px); 
     }
 }
